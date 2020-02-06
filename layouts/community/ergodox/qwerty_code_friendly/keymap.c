@@ -9,21 +9,13 @@
  * See `readme.md` for notes on each define.
  */
 
-/**
- * Optionally support 80 key layout.
- *
- * No default keys defined: use 'CFQ_USER_K80_L0K0' .. etc.
- */
-/* #define CFQ_USE_80_KEYS */
-
 /** Personal preference (enable by passing 'EXTRAFLAGS=...' to make). */
-/* #define CFQ_USE_MOMENTARY_LAYER_KEYS */
+#define CFQ_USE_MOMENTARY_LAYER_KEYS
 
 /** Holding right/left or left/right shift for single or double quote pair */
-/* #define CFQ_USE_SHIFT_QUOTES */
+#define CFQ_USE_SHIFT_QUOTES 
 
 #define CFQ_USE_DYNAMIC_MACRO
-
 
 #if !defined(CFQ_USER_KEY0)
 #  define CFQ_USER_KEY0 KC_BSPC
@@ -145,7 +137,7 @@
 #define CFQ_WORD_B ""
 #endif
 #ifndef CFQ_WORD_C
-#define CFQ_WORD_C ""
+#define CFQ_WORD_C "std::cout << << std::endl;"
 #endif
 #ifndef CFQ_WORD_D
 #define CFQ_WORD_D ""
@@ -154,7 +146,7 @@
 #define CFQ_WORD_E ""
 #endif
 #ifndef CFQ_WORD_F
-#define CFQ_WORD_F ""
+#define CFQ_WORD_F "for () {\n\n}"
 #endif
 #ifndef CFQ_WORD_G
 #define CFQ_WORD_G ""
@@ -163,7 +155,7 @@
 #define CFQ_WORD_H ""
 #endif
 #ifndef CFQ_WORD_I
-#define CFQ_WORD_I ""
+#define CFQ_WORD_I "if () {\n\n}"
 #endif
 #ifndef CFQ_WORD_J
 #define CFQ_WORD_J ""
@@ -202,7 +194,7 @@
 #define CFQ_WORD_U ""
 #endif
 #ifndef CFQ_WORD_V
-#define CFQ_WORD_V ""
+#define CFQ_WORD_V "std::vector<>"
 #endif
 #ifndef CFQ_WORD_W
 #define CFQ_WORD_W ""
@@ -261,6 +253,9 @@ enum custom_keycodes {
   M_ARROW_LMINUS,
   M_ARROW_REQL,
   M_ARROW_LEQL,
+  M_FOR_LOOP,
+  M_IF_STATEMENT,
+  M_VECTOR,
 
   /* allow user defined words for each character:
    * use CFQ_WORD_[A-Z] defines. */
@@ -299,67 +294,47 @@ enum custom_keycodes {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer
  * .--------------------------------------------------.  .--------------------------------------------------.
- * | Grave  |   !  |   @  |   #  |   $  |   %  |   {  |  |  }   |   ^  |   &  |   *  |   -  |   =  | BSpace |
+ * |  ` ¬   |   !  |   "  |   £  |   $  |   %  |   {  |  |  }   |   ^  |   &  |   *  |  - _ |  = + | BSpace |
  * |--------+------+------+------+------+------+------|  |------+------+------+------+------+------+--------|
- * | Tab    |   Q  |   W  |   E  |   R  |   T  |   (  |  |  )   |   Y  |   U  |   I  |   O  |   P  |   \    |
+ * | Tab    |   Q  |   W  |   E  |   R  |   T  |   (  |  |  )   |   Y  |   U  |   I  |   O  |   P  |   # ~  |
  * |--------+------+------+------+------+------|      |  |      |------+------+------+------+------+--------|
- * | Esc    |   A  |   S  |   D  |   F  |   G  |------|  |------|   H  |   J  |   K  |   L  |   ;  |   '    |
+ * | LCtl   |   A  |   S  |   D  |   F  |   G  |------|  |------|   H  |   J  |   K  |   L  |  ; : |   ' @  |
  * |--------+------+------+------+------+------|   [  |  |  ]   |------+------+------+------+------+--------|
- * | LShift |   Z  |   X  |   C  |   V  |   B  |      |  |      |   N  |   M  |   ,  |   .  |   /  | RShift |
+ * | LShift |   Z  |   X  |   C  |   V  |   B  |      |  |      |   N  |   M  |  , < |  . > | / ?  | RShift |
  * '--------+------+------+------+------+-------------'  '-------------+------+------+------+------+--------'
- *   | LCtl |Super | Alt  | ~L1  |Space |                              | Left | Down | Up   |Right | Del  |
+ *   | \ |  | LCtl |WrkSpc| ~L2  |  ~L1 |                              | Left | Down | Up   |Right | Esc  |
  *   '----------------------------------'                              '----------------------------------'
  *                                      .-------------.  .-------------.
- *                                      | Ins  |NumClk|  | Home | End  |
+ *                                      | Ins  | Del  |  | Home | End  |
  *                               .------+------+------|  |------+------+------.
- *                               |      |      |CapsLk|  | PgUp |      |      |
- *                               |BSpace| Del  |------|  |------| ~L2  |Enter |
+ *                               |      |      |WrkSwp|  | PgUp |      |      |
+ *                               |Alt   |Super |------|  |------|Enter |Space |
  *                               |      |      | ~L3  |  | PgDn |      |      |
  *                               '--------------------'  '--------------------'
  *
- * Optional overrides: see CFQ_USER_KEY# defines.
- *
- * .--------------------------------------------------.  .--------------------------------------------------.
- * |        |      |      |      |      |      |      |  |      |      |      |      |      |      | USR0   |
- * |--------+------+------+------+------+------+------|  |------+------+------+------+------+------+--------|
- * |        |      |      |      |      |      |      |  |      |      |      |      |      |      |        |
- * |--------+------+------+------+------+------|      |  |      |------+------+------+------+------+--------|
- * |        |      |      |      |      |      |------|  |------|      |      |      |      |      |        |
- * |--------+------+------+------+------+------|      |  |      |------+------+------+------+------+--------|
- * |        |      |      |      |      |      |      |  |      |      |      |      |      |      |        |
- * '--------+------+------+------+------+-------------'  '-------------+------+------+------+------+--------'
- *   |      |      |      | USR1 |      |                              |      |      |      |      | USR8 |
- *   '----------------------------------'                              '----------------------------------'
- *                                      .-------------.  .-------------.
- *                                      | USR2 | USR3 |  |      |      |
- *                               .------+------+------|  |------+------+------.
- *                               |      |      | USR6 |  |      |      |      |
- *                               | USR4 | USR5 |------|  |------|      |      |
- *                               |      |      | USR7 |  |      |      |      |
- *                               '--------------------'  '--------------------'
  */
 
 /* If it accepts an argument (i.e, is a function), it doesn't need KC_.
  * Otherwise, it needs KC_* */
 [LAYER_BASE] = LAYOUT_ergodox_76_or_80(  /* layer 0 : default */
   /* left hand */
-  KC_GRV,  KC_EXLM, KC_AT,   KC_HASH,       KC_DLR, KC_PERC, KC_LCBR,
-  KC_TAB,  KC_Q,    KC_W,    KC_E,          KC_R,   KC_T,    KC_LPRN,
-  KC_ESC,  KC_A,    KC_S,    KC_D,          KC_F,   KC_G,
-  KC_LSFT, KC_Z,    KC_X,    KC_C,          KC_V,   KC_B,    KC_LBRC,
-  KC_LCTL, KC_LGUI, KC_LALT, CFQ_USER_KEY1, KC_SPC,
-                                                    CFQ_USER_KEY2, CFQ_USER_KEY3,
-                                     K80(L0K0),     K80(L0K1),     CFQ_USER_KEY6,
-                                     CFQ_USER_KEY4, CFQ_USER_KEY5, CFQ_USER_KEY7,
+  KC_GRV,  KC_EXLM, KC_AT,   				KC_HASH,       KC_DLR, 		KC_PERC, KC_LCBR,
+  KC_TAB,  KC_Q,    KC_W,    				KC_E,          KC_R,   		KC_T,    KC_LPRN,
+  KC_LCTL, KC_A,    KC_S,    				KC_D,          KC_F,   		KC_G,
+  KC_LSFT, KC_Z,    KC_X,    				KC_C,          KC_V,   		KC_B,    KC_LBRC,
+  KC_NUBS, KC_LCTL, LM(1,MOD_LGUI), CFQ_KC_FN2, 	 CFQ_KC_FN1,
+                                                    KC_INS, 			 KC_DEL,
+                                     K80(L0K0),     K80(L0K1),     LM(1,MOD_LGUI|MOD_LSFT),
+                                     KC_LALT, 			KC_LGUI, 			 CFQ_KC_FN3,
   /* right hand */
-  KC_RCBR,     KC_CIRC, KC_AMPR, KC_ASTR,KC_MINS, KC_EQL,    CFQ_USER_KEY0,
+  KC_RCBR,     KC_CIRC, KC_AMPR, KC_ASTR,KC_MINS, KC_EQL,    KC_BSPC,
   KC_RPRN,     KC_Y,    KC_U,    KC_I,   KC_O,    KC_P,      KC_BSLS,
                KC_H,    KC_J,    KC_K,   KC_L,    KC_SCLN,   KC_QUOT,
   KC_RBRC,     KC_N,    KC_M,    KC_COMM,KC_DOT,  KC_SLSH,   KC_RSFT,
-                        KC_LEFT, KC_DOWN,KC_UP,   KC_RGHT,   CFQ_USER_KEY8,
+                        KC_LEFT, KC_DOWN,KC_UP,   KC_RGHT,   KC_ESC,
   KC_HOME, KC_END,
   KC_PGUP, K80(L0K2),  K80(L0K3),
-  KC_PGDN, CFQ_KC_FN2, KC_ENT
+  KC_PGDN, KC_ENT, 		 KC_SPC
 ),
 /* Keymap 1: KeyPad, Macro Record
  *
@@ -395,10 +370,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                               DYN_MACRO_PLAY1, DYN_MACRO_PLAY2,  KC_TRNS,
   /* right hand */
   M_BRACKET_OUT_CBR, KC_TRNS,           KC_NLCK, KC_KP_SLASH, KC_KP_ASTERISK, KC_KP_MINUS,  KC_TRNS,
-  M_BRACKET_OUT_PRN, M_ARROW_LEQL,      KC_KP_7, KC_KP_8,     KC_KP_9,        KC_KP_PLUS,  KC_TRNS,
-                     M_ARROW_LMINUS,    KC_KP_4, KC_KP_5,     KC_KP_6,        KC_KP_PLUS,  KC_TRNS,
-  M_BRACKET_OUT_BRC, M_BRACKET_OUT_ANG, KC_KP_1, KC_KP_2,     KC_KP_3,        KC_KP_ENTER, KC_TRNS,
-                                        KC_KP_0, KC_TRNS,     KC_KP_DOT,      KC_KP_ENTER, KC_TRNS,
+  M_BRACKET_OUT_PRN, M_ARROW_LEQL,      KC_7, 	 KC_8,     	  KC_9,        	  KC_KP_PLUS,  KC_TRNS,
+                     M_ARROW_LMINUS,    KC_4, 	 KC_5,     	  KC_6,        	  KC_KP_PLUS,  KC_TRNS,
+  M_BRACKET_OUT_BRC, M_BRACKET_OUT_ANG, KC_1, 	 KC_2,     	  KC_3,        	  KC_KP_ENTER, KC_TRNS,
+                                        KC_0, 	 KC_TRNS,     KC_KP_DOT,      KC_KP_ENTER, KC_TRNS,
   KC_TRNS, KC_TRNS,
   KC_TRNS, K80(L1K2), K80(L1K3),
   KC_TRNS, KC_TRNS, KC_TRNS
@@ -420,7 +395,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                      |      |      |  | MRwd | MFwd |
  *                               .------+------+------|  |------+------+------.
  *                               |      |      |      |  | MPrv |      |      |
- *                               |      |      |------|  |------|      | Play |
+ *                               |Super |      |------|  |------|      | Play |
  *                               |      |      |      |  | MNxt |      |      |
  *                               '--------------------'  '--------------------'
  */
@@ -434,7 +409,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
                                       KC_TRNS,   KC_TRNS,
                            K80(L2K0), K80(L2K1), KC_TRNS,
-                           KC_TRNS,   KC_TRNS,   KC_TRNS,
+                           KC_LGUI,   KC_TRNS,   KC_TRNS,
   /* right hand */
   KC_MUTE,  KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_TRNS,
   KC_VOLU,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
@@ -470,20 +445,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* FKEY & WORDS */
 [LAYER_FKEY] = LAYOUT_ergodox_76_or_80(
   /* left hand */
-  KC_TRNS, KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F11,
-  KC_TRNS, M_WORD_Q, M_WORD_W, M_WORD_E, M_WORD_R, M_WORD_T, KC_TRNS,
-  KC_TRNS, M_WORD_A, M_WORD_S, M_WORD_D, M_WORD_F, M_WORD_G,
-  KC_TRNS, M_WORD_Z, M_WORD_X, M_WORD_C, M_WORD_V, M_WORD_B, KC_TRNS,
+  KC_TRNS, KC_F1,    KC_F2,    KC_F3,    KC_F4,    	 KC_F5,    KC_F11,
+  KC_TRNS, M_WORD_Q, M_WORD_W, M_WORD_E, M_WORD_R, 	 M_WORD_T, KC_TRNS,
+  KC_TRNS, M_WORD_A, M_WORD_S, M_WORD_D, M_FOR_LOOP, M_WORD_G,
+  KC_TRNS, M_WORD_Z, M_WORD_X, M_WORD_C, M_VECTOR, 	 M_WORD_B, KC_TRNS,
   KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
                                                     KC_TRNS,   KC_TRNS,
                                          K80(L3K0), K80(L3K1), KC_TRNS,
                                          KC_TRNS,   KC_TRNS,   KC_TRNS,
   /* right hand */
-  KC_F12,  KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_TRNS,
-  KC_TRNS, M_WORD_Y, M_WORD_U, M_WORD_I, M_WORD_O, M_WORD_P, KC_TRNS,
-           M_WORD_H, M_WORD_J, M_WORD_K, M_WORD_L, KC_TRNS,  KC_TRNS,
-  KC_TRNS, M_WORD_N, M_WORD_M, KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
-                     KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
+  KC_F12,  KC_F6,    KC_F7,    KC_F8,    			 KC_F9,    KC_F10,   KC_TRNS,
+  KC_TRNS, M_WORD_Y, M_WORD_U, M_IF_STATEMENT, M_WORD_O, M_WORD_P, KC_TRNS,
+           M_WORD_H, M_WORD_J, M_WORD_K, 			 M_WORD_L, KC_TRNS,  KC_TRNS,
+  KC_TRNS, M_WORD_N, M_WORD_M, KC_TRNS,  			 KC_TRNS,  KC_TRNS,  KC_TRNS,
+                     KC_TRNS,  KC_TRNS,     	 KC_TRNS,  KC_TRNS,  KC_TRNS,
   KC_TRNS, KC_TRNS,
   KC_TRNS, K80(L3K2), K80(L3K3),
   KC_TRNS, KC_TRNS, KC_TRNS
@@ -624,6 +599,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
     }
+    case M_FOR_LOOP:  /* {} */
+      if (record->event.pressed) {
+        SEND_STRING("for () {\n}" SS_TAP(X_UP));
+        return false;
+      }
+      break;
+    case M_IF_STATEMENT:  /* {} */
+      if (record->event.pressed) {
+        SEND_STRING("if () {\n}" SS_TAP(X_UP));
+        return false;
+      }
+      break;
+    case M_VECTOR:  /* {} */
+      if (record->event.pressed) {
+        SEND_STRING("std::vector<>" SS_TAP(X_LEFT));
+        return false;
+      }
+      break;
   }
 
   return true;
