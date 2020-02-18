@@ -256,6 +256,8 @@ enum custom_keycodes {
   M_FOR_LOOP,
   M_IF_STATEMENT,
   M_VECTOR,
+  M_EQUATION,
+  M_PLOT,
 
   /* allow user defined words for each character:
    * use CFQ_WORD_[A-Z] defines. */
@@ -445,17 +447,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* FKEY & WORDS */
 [LAYER_FKEY] = LAYOUT_ergodox_76_or_80(
   /* left hand */
-  KC_TRNS, KC_F1,    KC_F2,    KC_F3,    KC_F4,    	 KC_F5,    KC_F11,
-  KC_TRNS, M_WORD_Q, M_WORD_W, M_WORD_E, M_WORD_R, 	 M_WORD_T, KC_TRNS,
-  KC_TRNS, M_WORD_A, M_WORD_S, M_WORD_D, M_FOR_LOOP, M_WORD_G,
-  KC_TRNS, M_WORD_Z, M_WORD_X, M_WORD_C, M_VECTOR, 	 M_WORD_B, KC_TRNS,
-  KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
+  KC_TRNS, KC_F1,    KC_F2,    KC_F3,      KC_F4,    	 KC_F5,    KC_F11,
+  KC_TRNS, M_WORD_Q, M_WORD_W, M_EQUATION, M_WORD_R, 	 M_WORD_T, KC_TRNS,
+  KC_TRNS, M_WORD_A, M_WORD_S, M_WORD_D,   M_FOR_LOOP, M_WORD_G,
+  KC_TRNS, M_WORD_Z, M_WORD_X, M_WORD_C,   M_VECTOR, 	 M_WORD_B, KC_TRNS,
+  KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS,    KC_TRNS,
                                                     KC_TRNS,   KC_TRNS,
                                          K80(L3K0), K80(L3K1), KC_TRNS,
                                          KC_TRNS,   KC_TRNS,   KC_TRNS,
   /* right hand */
   KC_F12,  KC_F6,    KC_F7,    KC_F8,    			 KC_F9,    KC_F10,   KC_TRNS,
-  KC_TRNS, M_WORD_Y, M_WORD_U, M_IF_STATEMENT, M_WORD_O, M_WORD_P, KC_TRNS,
+  KC_TRNS, M_WORD_Y, M_WORD_U, M_IF_STATEMENT, M_WORD_O, M_PLOT, KC_TRNS,
            M_WORD_H, M_WORD_J, M_WORD_K, 			 M_WORD_L, KC_TRNS,  KC_TRNS,
   KC_TRNS, M_WORD_N, M_WORD_M, KC_TRNS,  			 KC_TRNS,  KC_TRNS,  KC_TRNS,
                      KC_TRNS,  KC_TRNS,     	 KC_TRNS,  KC_TRNS,  KC_TRNS,
@@ -601,19 +603,31 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
     case M_FOR_LOOP:  /* {} */
       if (record->event.pressed) {
-        SEND_STRING("for () {\n}" SS_TAP(X_UP));
+        SEND_STRING("for () \n{\n\n}" SS_TAP(X_UP));
         return false;
       }
       break;
     case M_IF_STATEMENT:  /* {} */
       if (record->event.pressed) {
-        SEND_STRING("if () {\n}" SS_TAP(X_UP));
+        SEND_STRING("if () \n{\n\n}" SS_TAP(X_UP));
         return false;
       }
       break;
     case M_VECTOR:  /* {} */
       if (record->event.pressed) {
         SEND_STRING("std::vector<>" SS_TAP(X_LEFT));
+        return false;
+      }
+      break;
+    case M_EQUATION:  /* {} */
+      if (record->event.pressed) {
+        SEND_STRING(SS_TAP(X_NONUS_BSLASH)"begin{equation}\n\t"SS_TAP(X_NONUS_BSLASH)"label{}\n\n"SS_TAP(X_NONUS_BSLASH)"end{equation}jk0dt"SS_TAP(X_NONUS_BSLASH) SS_TAP(X_UP));
+        return false;
+      }
+      break;
+    case M_PLOT:  /* {} */
+      if (record->event.pressed) {
+        SEND_STRING(SS_TAP(X_NONUS_BSLASH)"begin{figure}\n\t"SS_TAP(X_NONUS_BSLASH)"label{}\n"SS_TAP(X_NONUS_BSLASH)"caption{}\n"SS_TAP(X_NONUS_BSLASH)"includegraphics[]{}\n"SS_TAP(X_NONUS_BSLASH)"end{figure}jk0dt"SS_TAP(X_NONUS_BSLASH) SS_TAP(X_UP));
         return false;
       }
       break;
